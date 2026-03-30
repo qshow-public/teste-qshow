@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q'SHOW Entertainment News - Uma Festa Todo Dia!</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #E50914; /* Vermelho Q'SHOW */
+            --bg-dark: #141414;
+            --card-bg: #1f1f1f;
+            --text-light: #ffffff;
+            --text-gray: #b3b3b3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+
+        body { background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; overflow-x: hidden; }
+
+        /* Header & Navigation (Design 1) */
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .logo-area h1 { color: var(--primary); font-size: 2rem; letter-spacing: 2px; margin-bottom: -5px; }
+        .logo-area span { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; }
+
+        /* Player Bar */
+        .player-container {
+            background: var(--primary);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+        }
+        audio { height: 30px; width: 150px; }
+
+        /* Hero Section (Design 1) */
+        .hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.2), var(--bg-dark)), 
+                        url('https://images.unsplash.com/photo-1514525253344-f814d074e015?q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+        }
+        .hero h2 { font-size: 3rem; max-width: 600px; line-height: 1.1; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { color: var(--primary); font-weight: bold; font-size: 1.2rem; text-transform: uppercase; }
+
+        /* News Sections */
+        .container { padding: 40px 5% 80px; }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        /* Cards Style (Design 1 melhorado) */
+        .news-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 2px solid transparent;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background-color: #333; /* Placeholder color */
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .news-card:hover img { transform: scale(1.1); }
+
+        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-content h3 { font-size: 1.1rem; margin-bottom: 10px; min-height: 2.8em; color: #fff; line-height: 1.4; }
+        .card-content p { color: var(--text-gray); font-size: 0.9rem; margin-bottom: 15px; flex-grow: 1; }
+        
+        .btn-read {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-top: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 60px 5%;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+        .social-links { margin: 20px 0; display: flex; justify-content: center; gap: 20px; }
+        .social-links a { color: var(--text-light); font-size: 1.5rem; transition: 0.3s; }
+        .social-links a:hover { color: var(--primary); }
+        .contact-info { margin-top: 20px; color: var(--text-gray); font-size: 0.9rem; }
+
+        /* Loading Animation */
+        .loading-skeleton {
+            color: var(--text-gray);
+            font-style: italic;
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 15px; text-align: center; position: relative; background: #000; }
+            .hero h2 { font-size: 2rem; }
+            .news-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="mainHeader">
+        <div class="logo-area">
+            <h1>Q'SHOW</h1>
+            <span>Entertainment</span>
+        </div>
+        
+        <div class="player-container">
+            <span style="font-size: 0.7rem; font-weight: bold;"><i class="fas fa-signal"></i> AO VIVO</span>
+            <audio controls>
+                <source src="https://hts09.brascast.com:7988/live" type="audio/mpeg">
+                Seu navegador não suporta o player.
+            </audio>
+        </div>
+    </header>
+
+    <section class="hero">
+        <p>Q'SHOW – Uma Festa Todo Dia!</p>
+        <h2>O seu portal de entretenimento em 2026.</h2>
+    </section>
+
+    <div class="container">
+        
+        <h2 class="section-title"><i class="fas fa-music"></i> Música & Cultura</h2>
+        <div id="musica-feed" class="news-grid">
+            <div class="loading-skeleton">Sintonizando as melhores vibrações...</div>
+        </div>
+
+        <h2 class="section-title"><i class="fas fa-running"></i> Esportes</h2>
+        <div id="esporte-feed" class="news-grid">
+            <div class="loading-skeleton">Aquecendo os motores...</div>
+        </div>
+
+        <h2 class="section-title"><i class="fas fa-tv"></i> TV & Variedades</h2>
+        <div id="tv-feed" class="news-grid">
+            <div class="loading-skeleton">Preparando a pipoca...</div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="logo-area">
+            <h1>Q'SHOW</h1>
+            <p>Uma Festa Todo Dia!</p>
+        </div>
+        
+        <div class="social-links">
+            <a href="https://www.instagram.com/qshowweb" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://m.youtube.com/@qshowweb" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="mailto:contato@qshow.com.br"><i class="fas fa-envelope"></i></a>
+        </div>
+
+        <div class="contact-info">
+            <p>© 2026 Q'SHOW Entertainment News.</p>
+            <p>contato@qshow.com.br</p>
+            <p style="font-size: 0.7rem; margin-top: 10px; color: #444;">Fontes: Agência Brasil</p>
+        </div>
+    </footer>
+
+    <script>
+        // Links RSS Estáveis da Agência Brasil
+        const FEEDS_CONFIG = {
+            musica: { 
+                url: 'https://agenciabrasil.ebc.com.br/rss/cultura/feed.xml',
+                defaultImg: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?q=80&w=600' // Microfone vintage
+            },
+            esporte: { 
+                url: 'https://agenciabrasil.ebc.com.br/rss/esportes/feed.xml',
+                defaultImg: 'https://images.unsplash.com/photo-1471295253337-3ceaaad65897?q=80&w=600' // Linha de chegada
+            },
+            tv: { 
+                url: 'https://agenciabrasil.ebc.com.br/rss/geral/feed.xml',
+                defaultImg: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=600' // TV Antiga moderno
+            }
+        };
+
+        async function fetchRSS(categoryKey, elementId) {
+            const config = FEEDS_CONFIG[categoryKey];
+            // Usando rss2json com uma API key de fallback mais estável
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(config.url)}&api_key=j5v9v4f8y0n6b4o2l8z1p0x&count=10`;
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                
+                const container = document.getElementById(elementId);
+                if (!data.items || data.items.length === 0) {
+                    container.innerHTML = "<div class='loading-skeleton'>Novas notícias chegando em breve...</div>";
+                    return;
+                }
+                
+                container.innerHTML = '';
+
+                // Seleciona 3 itens aleatórios dos primeiros 10 para evitar repetição excessiva se o feed demorar a atualizar
+                const shuffled = data.items.sort(() => 0.5 - Math.random());
+                const selectedItems = shuffled.slice(0, 3);
+
+                selectedItems.forEach(item => {
+                    // LÓGICA DE IMAGEM MELHORADA
+                    let img = '';
+                    
+                    // 1. Tenta pegar imagem direta do encapsulamento (inclosure)
+                    if (item.enclosure && item.enclosure.link && item.enclosure.type && item.enclosure.type.includes('image')) {
+                        img = item.enclosure.link;
+                    } 
+                    // 2. Tenta pegar a thumbnail da API
+                    else if (item.thumbnail) {
+                        img = item.thumbnail;
+                    }
+                    // 3. Tenta extrair da descrição (comum na EBC)
+                    else if (item.description && item.description.includes('<img')) {
+                        const m = item.description.match(/<img[^>]+src="([^">]+)"/);
+                        if (m && m[1]) img = m[1];
+                    }
+                    
+                    // 4. Fallback: Se não achou nada ou a imagem é muito pequena, usa a imagem padrão da categoria
+                    if (!img || img.length < 10) {
+                        img = config.defaultImg;
+                    }
+
+                    // Limpar e resumir descrição
+                    let cleanDesc = item.description.replace(/<[^>]*>?/gm, '').trim();
+                    cleanDesc = cleanDesc.substring(0, 110) + '...';
+
+                    const cardHtml = `
+                        <div class="news-card" onclick="window.open('${item.link}', '_blank')">
+                            <div class="img-container">
+                                <img src="${img}" alt="Q'SHOW News" onerror="this.src='${config.defaultImg}';">
+                            </div>
+                            <div class="card-content">
+                                <h3>${item.title}</h3>
+                                <p>${cleanDesc}</p>
+                                <span class="btn-read">Ler reportagem</span>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += cardHtml;
+                });
+            } catch (error) {
+                console.error(`Erro na categoria ${categoryKey}:`, error);
+                document.getElementById(elementId).innerHTML = "<div class='loading-skeleton'>Conteúdo temporariamente indisponível.</div>";
+            }
+        }
+
+        // Iniciar carregamento quando a página abrir
+        window.addEventListener('load', () => {
+            fetchRSS('musica', 'musica-feed');
+            fetchRSS('esporte', 'esporte-feed');
+            fetchRSS('tv', 'tv-feed');
+        });
+
+        // Efeito de transparência no header ao rolar (Design 1)
+        window.onscroll = function() {
+            const header = document.getElementById("mainHeader");
+            if (window.pageYOffset > 50) {
+                header.style.background = "rgba(0,0,0,0.95)";
+                header.style.boxShadow = "0 2px 10px rgba(0,0,0,0.5)";
+            } else {
+                header.style.background = "linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)";
+                header.style.boxShadow = "none";
+            }
+        };
+    </script>
+</body>
+</html>
