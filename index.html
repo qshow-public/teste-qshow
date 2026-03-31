@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q'SHOW - A Trilha da Sua Vida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --q-blue: #007bff;
+            --q-lime: #ccff00;
+            --q-purple: #8a2be2;
+            --q-dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--q-dark);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            padding: 3rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 3rem;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text {
+            color: #ccc;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .live-player {
+            background: var(--glass);
+            border-radius: 50px;
+            padding: 12px 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: red;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Grid de Cards */
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .day-indicator {
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--q-lime);
+            font-weight: bold;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* Estilo dos Cards */
+        .card {
+            position: relative;
+            height: 500px;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card:hover { transform: translateY(-10px); }
+
+        .card-blue { background: linear-gradient(135deg, #001f3f, var(--q-blue)); }
+        .card-lime { background: linear-gradient(135deg, #4c5f00, var(--q-lime)); color: black; }
+        .card-purple { background: linear-gradient(135deg, #2d004d, var(--q-purple)); }
+
+        .qshow-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 6rem;
+            font-weight: 900;
+            opacity: 0.07;
+            pointer-events: none;
+        }
+
+        .card-content { position: relative; z-index: 2; }
+        .movie-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; }
+        .song-name { font-size: 1.1rem; opacity: 0.8; margin-bottom: 25px; display: block; }
+
+        .btn-play {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .btn-play:hover { background: #cc0000; box-shadow: 0 10px 20px rgba(255,0,0,0.3); }
+
+        /* Rodapé */
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 25px; }
+        .social-links a { color: white; text-decoration: none; font-size: 0.9rem; transition: 0.3s; opacity: 0.7; }
+        .social-links a:hover { color: var(--q-lime); opacity: 1; }
+
+        /* Player Modal */
+        #video-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        iframe { max-width: 100%; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Q'SHOW</div>
+    <p class="hero-text">"Reviva momentos inesquecíveis através das trilhas sonoras que marcaram sua vida."</p>
+    
+    <div class="live-player">
+        <div class="live-dot"></div>
+        <span style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1px;">OUÇA A Q'SHOW</span>
+        <audio controls style="height: 30px; filter: invert(1);">
+            <source src="https://hts09.brascast.com:7988/live" type="audio/mpeg">
+        </audio>
+    </div>
+</header>
+
+<div class="container">
+    <div id="day-text" class="day-indicator"></div>
+    <div class="grid" id="daily-grid">
+        </div>
+</div>
+
+<footer>
+    <div class="social-links">
+        <a href="https://www.instagram.com/qshowweb?igsh=MXZoN3p2bnlxeDVjbg==" target="_blank">INSTAGRAM</a>
+        <a href="https://m.youtube.com/@qshowweb" target="_blank">YOUTUBE</a>
+        <a href="mailto:contato@qshow.com.br">CONTATO</a>
+    </div>
+    <p style="font-size: 0.7rem; opacity: 0.4; letter-spacing: 1px;">© 2024 Q'SHOW - CONEXÃO EMOCIONAL</p>
+</footer>
+
+<div id="video-modal" onclick="closeModal()">
+    <div id="player-container"></div>
+</div>
+
+<script>
+    // Exemplo de Base de Dados (Estrutura para os 365 dias)
+    // O sistema seleciona os cards baseando-se no dia do ano (1-365)
+    const playlist365 = [
+        // Dia 1 (Exemplo)
+        [
+            { movie: "O Rei Leão", song: "Circle of Life", yt: "GibiNy4d4gc" },
+            { movie: "Titanic", song: "My Heart Will Go On", yt: "F2RnxZnubEc" },
+            { movie: "Gladiador", song: "Now We Are Free", yt: "NBE-uBgtINg" }
+        ],
+        // Dia 2 (Exemplo)
+        [
+            { movie: "Interstellar", song: "First Step", yt: "IDsCtDRV2uA" },
+            { movie: "Pulp Fiction", song: "Misirlou", yt: "mXonZ99PZpE" },
+            { movie: "Rocky", song: "Gonna Fly Now", yt: "ioE_O7Lm0I4" }
+        ],
+        // ... e assim por diante até 365
+    ];
+
+    function getDayOfYear() {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        return Math.floor(diff / oneDay);
+    }
+
+    function renderDailyCards() {
+        const grid = document.getElementById('daily-grid');
+        const dayText = document.getElementById('day-text');
+        const today = new Date();
+        
+        // Formata a data atual
+        dayText.innerText = today.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+        // Pega o índice do dia (com fallback caso o array ainda não esteja completo)
+        const dayIndex = (getDayOfYear() - 1) % playlist365.length;
+        const dailySelection = playlist365[dayIndex];
+        
+        const colors = ['card-blue', 'card-lime', 'card-purple'];
+
+        grid.innerHTML = dailySelection.map((item, index) => `
+            <div class="card ${colors[index]}">
+                <div class="qshow-watermark">Q'SHOW</div>
+                <div class="card-content">
+                    <h2 class="movie-title">${item.movie}</h2>
+                    <span class="song-name">${item.song}</span>
+                    <button class="btn-play" onclick="openModal('${item.yt}')">Ouvir a música</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openModal(id) {
+        const modal = document.getElementById('video-modal');
+        const player = document.getElementById('player-container');
+        player.innerHTML = `<iframe width="800" height="450" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('video-modal').style.display = 'none';
+        document.getElementById('player-container').innerHTML = '';
+    }
+
+    // Iniciar
+    renderDailyCards();
+</script>
+
+</body>
+</html>
