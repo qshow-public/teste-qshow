@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q'SHOW - Receita Fitness Diária</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; background-color: #fcfdfb; }
+        .recipe-gradient { background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%); }
+        .active-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 6px; }
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-2xl font-extrabold tracking-tighter text-emerald-600">Q'SHOW</span>
+                <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold">Health & Fitness</span>
+            </div>
+            
+            <div class="hidden md:flex gap-8 text-sm font-semibold text-gray-500 uppercase tracking-widest">
+                <a href="#hoje" class="hover:text-emerald-600 transition">Receitas de Hoje</a>
+                <a href="#video" class="hover:text-emerald-600 transition">Canal YouTube</a>
+                <a href="#contato" class="hover:text-emerald-600 transition">Contato</a>
+            </div>
+
+            <a href="https://www.instagram.com/qshowweb" target="_blank" class="bg-emerald-50 text-emerald-700 px-5 py-2.5 rounded-full text-sm font-bold hover:bg-emerald-100 transition flex items-center gap-2">
+                <i data-lucide="instagram" size="18"></i> Siga-nos
+            </a>
+        </div>
+    </nav>
+
+    <section class="max-w-6xl mx-auto px-6 py-12">
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-full mb-6">
+                <span class="active-dot animate-pulse"></span>
+                <span class="text-xs font-bold uppercase tracking-wider" id="current-full-date">Carregando...</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">Uma receita saudável para <span class="text-emerald-600">cada dia do ano.</span></h1>
+            <p class="text-gray-500 text-lg max-w-2xl mx-auto italic">“Q'SHOW – Sua vida mais leve, um prato de cada vez”</p>
+        </div>
+
+        <div id="hoje" class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            </div>
+    </section>
+
+    <section id="video" class="bg-gray-900 py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-3xl font-bold text-white mb-6 leading-tight">Aprenda o preparo <br><span class="text-emerald-500">em nosso canal oficial.</span></h2>
+                    <p class="text-gray-400 mb-8 leading-relaxed text-lg">Não apenas leia, assista! Mostramos o passo a passo de como transformar ingredientes simples em pratos extraordinários para sua dieta.</p>
+                    <a href="https://m.youtube.com/@qshowweb" target="_blank" class="inline-flex items-center gap-3 bg-red-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-red-700 transition transform hover:scale-105 shadow-xl shadow-red-900/20">
+                        <i data-lucide="youtube"></i> ACESSAR Q'SHOW TV
+                    </a>
+                </div>
+                <div class="w-full md:w-1/2 aspect-video bg-gray-800 rounded-[2rem] overflow-hidden border-4 border-gray-800 shadow-2xl relative">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed?listType=user_uploads&list=qshowweb" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contato" class="bg-white border-t border-gray-100 py-16">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="mb-10 text-emerald-600 font-extrabold text-3xl italic tracking-tighter">Q'SHOW</div>
+            <div class="flex flex-wrap justify-center gap-8 mb-12">
+                <div class="flex items-center gap-3 text-gray-600 font-medium">
+                    <i data-lucide="mail" class="text-emerald-500"></i> contato@qshow.com.br
+                </div>
+                <a href="https://www.instagram.com/qshowweb" target="_blank" class="flex items-center gap-3 text-gray-600 font-medium hover:text-emerald-600">
+                    <i data-lucide="instagram" class="text-emerald-500"></i> @qshowweb
+                </a>
+            </div>
+            <p class="text-gray-400 text-sm">© 2026 Q'SHOW Brasil. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializar ícones Lucide
+        lucide.createIcons();
+
+        // Banco de Dados Simulado (Expandível)
+        const allRecipes = [
+            { id: 1, title: "Bowl de Açaí Zero Açúcar", kcal: "180", time: "5 min", cat: "Café da Manhã", img: "https://images.unsplash.com/photo-1590301157890-4810ed352733?q=80&w=800", type: "Brasil 🇧🇷" },
+            { id: 2, title: "Salmão Grelhado Lemon Pepper", kcal: "320", time: "20 min", cat: "Almoço Fitness", img: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=800", type: "EUA 🇺🇸" },
+            { id: 3, title: "Mousse de Abacate e Cacau", kcal: "150", time: "10 min", cat: "Sobremesa Fit", img: "https://images.unsplash.com/photo-1528740097341-9958ad560a64?q=80&w=800", type: "Itália 🇮🇹" },
+            { id: 4, title: "Tapioca Proteica de Frango", kcal: "240", time: "12 min", cat: "Lanche Tarde", img: "https://images.unsplash.com/photo-1510629954389-c1e0da47d414?q=80&w=800", type: "Brasil 🇧🇷" },
+            { id: 5, title: "Poke de Atum e Quinoa", kcal: "290", time: "15 min", cat: "Jantar Leve", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800", type: "Japão 🇯🇵" },
+            { id: 6, title: "Panqueca de Aveia e Banana", kcal: "210", time: "8 min", cat: "Pré-Treino", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7bb7445?q=80&w=800", type: "Global 🌎" }
+        ];
+
+        function getDailyRecipes() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+            
+            // Lógica para selecionar 3 receitas baseadas no dia do ano
+            const startIndex = (dayOfYear * 3) % allRecipes.length;
+            return [
+                allRecipes[(startIndex) % allRecipes.length],
+                allRecipes[(startIndex + 1) % allRecipes.length],
+                allRecipes[(startIndex + 2) % allRecipes.length]
+            ];
+        }
+
+        function render() {
+            const recipesContainer = document.getElementById('hoje');
+            const dateLabel = document.getElementById('current-full-date');
+            
+            // Atualizar Data
+            dateLabel.innerText = new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            const daily = getDailyRecipes();
+            
+            recipesContainer.innerHTML = daily.map(recipe => `
+                <div class="group cursor-pointer">
+                    <div class="relative h-96 w-full rounded-[2.5rem] overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
+                        <img src="${recipe.img}" alt="${recipe.title}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 recipe-gradient flex flex-col justify-end p-8">
+                            <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2">${recipe.cat}</span>
+                            <h3 class="text-white text-2xl font-bold leading-tight mb-4">${recipe.title}</h3>
+                            <div class="flex items-center gap-4 text-white/80 text-sm font-medium">
+                                <span class="flex items-center gap-1.5"><i data-lucide="clock" size="16"></i> ${recipe.time}</span>
+                                <span class="flex items-center gap-1.5"><i data-lucide="flame" size="16"></i> ${recipe.kcal} kcal</span>
+                                <span class="ml-auto bg-white/20 px-3 py-1 rounded-full text-[10px]">${recipe.type}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-between items-center px-4">
+                        <span class="text-gray-400 text-sm font-bold uppercase tracking-tighter">Receita do Dia</span>
+                        <button class="text-emerald-600 font-bold hover:translate-x-2 transition-transform flex items-center gap-2">Ver mais <i data-lucide="arrow-right" size="18"></i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        render();
+    </script>
+</body>
+</html>
