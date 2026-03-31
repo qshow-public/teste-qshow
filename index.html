@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q'SHOW - Trilhas Inesquecíveis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --q-blue: #007bff;
+            --q-lime: #ccff00;
+            --q-purple: #8a2be2;
+            --q-dark: #0a0a0a;
+            --q-card-bg: #1a1a1a;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--q-dark);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Header & Hero */
+        header {
+            padding: 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 2.5rem;
+            letter-spacing: -2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-text {
+            color: var(--q-lime);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        /* Radio Player Section */
+        .live-player {
+            background: var(--glass);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Search & Filter */
+        .controls {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            display: flex;
+            gap: 10px;
+            padding: 0 1rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            background: #222;
+            color: white;
+            outline: none;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus { border-color: var(--q-lime); }
+
+        /* Grid de Cards */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .date-divider {
+            margin: 40px 0 20px;
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card Style */
+        .card {
+            position: relative;
+            height: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+        }
+
+        .card:hover { transform: scale(1.03); }
+
+        .card-blue { background: linear-gradient(135deg, #001f3f, var(--q-blue)); }
+        .card-lime { background: linear-gradient(135deg, #4c5f00, var(--q-lime)); color: black; }
+        .card-purple { background: linear-gradient(135deg, #2d004d, var(--q-purple)); }
+
+        .qshow-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5rem;
+            font-weight: 900;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .card-content { position: relative; z-index: 2; }
+        .movie-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 5px; }
+        .song-name { font-size: 1rem; opacity: 0.9; margin-bottom: 20px; display: block;}
+
+        .btn-play {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-play:hover { background: #cc0000; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,0,0,0.4); }
+
+        .fav-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.3);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 100px;
+            padding: 50px 20px;
+            background: #000;
+            text-align: center;
+        }
+
+        .social-links { margin: 20px 0; display: flex; justify-content: center; gap: 20px; }
+        .social-links a { color: white; text-decoration: none; font-size: 1.2rem; transition: 0.3s; }
+        .social-links a:hover { color: var(--q-lime); }
+
+        /* Modal Player */
+        #video-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Q'SHOW</div>
+    <p class="hero-text">"Reviva momentos inesquecíveis através das trilhas sonoras que marcaram sua vida."</p>
+    
+    <div class="live-player">
+        <span>🔴 AO VIVO</span>
+        <audio controls style="height: 30px;">
+            <source src="https://hts09.brascast.com:7988/live" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Pesquise por filme ou música..." onkeyup="search()">
+    </div>
+</header>
+
+<div class="container">
+    <div id="cards-container">
+        </div>
+</div>
+
+<footer>
+    <p>Conecte-se com a Q'SHOW</p>
+    <div class="social-links">
+        <a href="https://www.instagram.com/qshowweb?igsh=MXZoN3p2bnlxeDVjbg==" target="_blank">Instagram</a>
+        <a href="https://m.youtube.com/@qshowweb" target="_blank">YouTube</a>
+        <a href="mailto:contato@qshow.com.br">Email</a>
+    </div>
+    <p style="font-size: 0.8rem; opacity: 0.5;">&copy; 2024 Q'SHOW - Todos os direitos reservados.</p>
+</footer>
+
+<div id="video-modal" onclick="closeModal()">
+    <div id="player-container"></div>
+</div>
+
+<script>
+    // Banco de Dados Simulado (Amostra do conceito para 1095 entradas)
+    // Em um cenário real, este objeto seria preenchido com os 1095 itens.
+    const moviesData = [
+        { movie: "O Rei Leão", song: "Circle of Life", yt: "GibiNy4d4gc", date: "2024-01-01" },
+        { movie: "Titanic", song: "My Heart Will Go On", yt: "F2RnxZnubEc", date: "2024-01-01" },
+        { movie: "Gladiador", song: "Now We Are Free", yt: "NBE-uBgtINg", date: "2024-01-01" },
+        { movie: "Interstellar", song: "First Step", yt: "IDsCtDRV2uA", date: "2024-01-02" },
+        { movie: "Pulp Fiction", song: "Misirlou", yt: "mXonZ99PZpE", date: "2024-01-02" },
+        { movie: "Rocky", song: "Gonna Fly Now", yt: "ioE_O7Lm0I4", date: "2024-01-02" },
+        // Adicione os outros 1089 aqui...
+    ];
+
+    const colors = ['card-blue', 'card-lime', 'card-purple'];
+
+    function renderCards(filter = "") {
+        const container = document.getElementById('cards-container');
+        container.innerHTML = "";
+        
+        let currentDay = "";
+        
+        const filtered = moviesData.filter(item => 
+            item.movie.toLowerCase().includes(filter.toLowerCase()) || 
+            item.song.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        filtered.forEach((item, index) => {
+            if (item.date !== currentDay) {
+                currentDay = item.date;
+                const dateLabel = document.createElement('div');
+                dateLabel.className = 'date-divider';
+                dateLabel.innerText = new Date(item.date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
+                container.appendChild(dateLabel);
+                
+                const grid = document.createElement('div');
+                grid.className = 'grid';
+                grid.id = `grid-${currentDay}`;
+                container.appendChild(grid);
+            }
+
+            const colorClass = colors[index % 3];
+            const card = `
+                <div class="card ${colorClass}">
+                    <div class="qshow-watermark">Q'SHOW</div>
+                    <button class="fav-btn" onclick="toggleFav(this)">❤</button>
+                    <div class="card-content">
+                        <h2 class="movie-title">${item.movie}</h2>
+                        <span class="song-name">${item.song}</span>
+                        <button class="btn-play" onclick="openModal('${item.yt}')">Ouvir a música</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById(`grid-${currentDay}`).innerHTML += card;
+        });
+    }
+
+    function openModal(id) {
+        const modal = document.getElementById('video-modal');
+        const player = document.getElementById('player-container');
+        player.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('video-modal').style.display = 'none';
+        document.getElementById('player-container').innerHTML = '';
+    }
+
+    function search() {
+        const val = document.getElementById('searchInput').value;
+        renderCards(val);
+    }
+
+    function toggleFav(btn) {
+        btn.style.color = btn.style.color === 'red' ? 'white' : 'red';
+        event.stopPropagation();
+    }
+
+    // Inicialização
+    renderCards();
+</script>
+
+</body>
+</html>
